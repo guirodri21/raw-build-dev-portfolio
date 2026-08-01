@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raw Build Dev — Desenvolvimento de Software e Sites</title>
+<style>
+  :root{
+    --bg:#0b0b0d; --bg2:#0f0f12; --card:#161619; --line:#2a2a2f;
+    --text:#f2f3f5; --muted:#9a9aa2; --silver:#c9ccd1; --silver2:#8a8d94;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+  a{color:inherit;text-decoration:none}
+  .container{max-width:1100px;margin:0 auto;padding:0 24px}
+  .metal{background:linear-gradient(180deg,#ffffff 0%,#c9ccd1 40%,#6f7278 60%,#c9ccd1 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* Nav */
+  header{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(11,11,13,.85);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand svg{width:42px;height:42px}
+  .brand .name{font-weight:800;font-size:19px;letter-spacing:1px}
+  .brand .name small{display:block;font-size:10px;letter-spacing:3px;color:var(--muted);font-weight:600}
+  .nav-links{display:flex;gap:28px}
+  .nav-links a{color:var(--muted);font-size:15px;transition:color .2s}
+  .nav-links a:hover{color:var(--text)}
+  .btn{display:inline-block;padding:12px 24px;border-radius:8px;font-weight:600;transition:transform .15s,box-shadow .2s;border:1px solid transparent}
+  .btn-primary{background:linear-gradient(180deg,#e9ebee,#a9acb2);color:#0b0b0d;box-shadow:0 6px 20px rgba(200,200,210,.15)}
+  .btn-primary:hover{transform:translateY(-2px)}
+  .btn-ghost{border:1px solid var(--line);color:var(--text)}
+  .btn-ghost:hover{border-color:var(--silver)}
+
+  /* Hero */
+  .hero{padding:100px 0 90px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(180,183,190,.12),transparent 60%);z-index:-1}
+  .hero .badge{width:120px;height:120px;margin:0 auto 28px;filter:drop-shadow(0 10px 30px rgba(0,0,0,.6))}
+  .hero h1{font-size:clamp(34px,6vw,56px);font-weight:800;line-height:1.1;margin-bottom:20px}
+  .hero p{color:var(--muted);font-size:clamp(16px,2.5vw,20px);max-width:640px;margin:0 auto 36px}
+  .hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+  /* Sections */
+  section{padding:80px 0}
+  .section-title{font-size:32px;font-weight:800;margin-bottom:12px}
+  .section-sub{color:var(--muted);margin-bottom:48px;max-width:600px}
+
+  /* Grid / cards */
+  .grid{display:grid;gap:24px}
+  .grid-4{grid-template-columns:repeat(4,1fr)}
+  .grid-2{grid-template-columns:repeat(2,1fr)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:28px;transition:transform .2s,border-color .2s}
+  .card:hover{transform:translateY(-4px);border-color:var(--silver2)}
+  .card .ico{font-size:26px;margin-bottom:14px}
+  .card h3{font-size:18px;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:14px}
+
+  /* Projetos */
+  .project{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s}
+  .project:hover{transform:translateY(-4px);border-color:var(--silver)}
+  .project .thumb{height:200px;display:flex;align-items:center;justify-content:center;background:
+     linear-gradient(135deg,#1b1b1f,#0d0d10);color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);text-align:center;padding:20px;overflow:hidden}
+  .project .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .project .body{padding:24px}
+  .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.5px;color:#0b0b0d;background:linear-gradient(180deg,#e9ebee,#a9acb2);padding:4px 12px;border-radius:20px;margin-bottom:12px}
+  .project h3{font-size:20px;margin-bottom:8px}
+  .project p{color:var(--muted);font-size:14px;margin-bottom:16px}
+  .project .link{color:var(--silver);font-weight:600;font-size:14px}
+
+  /* Stats */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+  .stat{text-align:center;padding:24px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+  .stat .num{font-size:34px;font-weight:800}
+  .stat .lbl{color:var(--muted);font-size:14px}
+
+  /* CTA */
+  .cta{background:linear-gradient(135deg,#161619,#0d0d10);border:1px solid var(--line);border-radius:20px;padding:56px;text-align:center}
+  .cta h2{font-size:30px;margin-bottom:14px}
+  .cta p{color:var(--muted);margin-bottom:28px}
+
+  footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;color:var(--muted);font-size:14px}
+
+  @media(max-width:860px){.grid-4{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.nav-links{display:none}.cta{padding:36px 24px}}
+</style>
+</head>
+<body>
+
+<!-- ==== LOGO SVG (emblema RB metálico) ==== -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <radialGradient id="ring" cx="35%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="35%" stop-color="#c9ccd1"/>
+      <stop offset="65%" stop-color="#6f7278"/>
+      <stop offset="100%" stop-color="#b8bbc0"/>
+    </radialGradient>
+    <linearGradient id="mono" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e2e4e7"/>
+    </linearGradient>
+  </defs>
+  <symbol id="rblogo" viewBox="0 0 200 200">
+    <circle cx="100" cy="100" r="98" fill="#0b0b0d"/>
+    <circle cx="100" cy="100" r="94" fill="none" stroke="url(#ring)" stroke-width="10"/>
+    <circle cx="100" cy="100" r="80" fill="#000"/>
+    <!-- R -->
+    <path d="M52 62 h26 c16 0 26 9 26 23 0 10 -5 17 -14 20 l17 28 h-22 l-14 -25 h-4 v25 h-21 z
+             M73 91 h6 c6 0 9 -3 9 -8 0 -5 -3 -8 -9 -8 h-6 z" fill="url(#mono)"/>
+    <!-- B -->
+    <path d="M112 62 h30 c14 0 22 7 22 18 0 6 -3 11 -8 14 6 3 10 8 10 15 0 12 -9 19 -24 19 h-30 z
+             M133 88 h8 c5 0 8 -2 8 -6 0 -4 -3 -6 -8 -6 h-8 z
+             M133 112 h9 c6 0 9 -2 9 -7 0 -4 -3 -6 -9 -6 h-9 z" fill="url(#mono)"/>
+    <text x="100" y="150" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="20" font-weight="800" letter-spacing="2" fill="#fff">RAWBUILD</text>
+  </symbol>
+</svg>
+
+<header>
+  <div class="container">
+    <nav>
+      <div class="brand">
+        <svg><use href="#rblogo"/></svg>
+        <div class="name">RAW BUILD DEV<small>SOFTWARE &amp; SITES</small></div>
+      </div>
+      <div class="nav-links">
+        <a href="#servicos">Serviços</a>
+        <a href="#projetos">Projetos</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+      </div>
+      <a href="#contato" class="btn btn-primary">Orçamento</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <svg class="badge"><use href="#rblogo"/></svg>
+    <h1>Construímos <span class="metal">softwares e sites</span><br>sob medida para o seu negócio</h1>
+    <p>Sistemas web, aplicativos e landing pages de alta conversão. Tecnologia de ponta, entrega ágil e código feito para escalar.</p>
+    <div class="hero-actions">
+      <a href="#projetos" class="btn btn-primary">Ver projetos</a>
+      <a href="#contato" class="btn btn-ghost">Fale conosco</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section id="servicos">
+  <div class="container">
+    <h2 class="section-title metal">O que fazemos</h2>
+    <p class="section-sub">Soluções digitais completas, do planejamento à entrega.</p>
+    <div class="grid grid-4">
+      <div class="card"><div class="ico">🛠️</div><h3>Sistemas sob medida</h3><p>Plataformas web, painéis administrativos e automações feitas para o seu fluxo.</p></div>
+      <div class="card"><div class="ico">🚀</div><h3>Landing pages</h3><p>Páginas rápidas e otimizadas para captar leads e converter visitantes.</p></div>
+      <div class="card"><div class="ico">🌐</div><h3>Sites institucionais</h3><p>Presença profissional na web, responsiva e pronta para o Google.</p></div>
+      <div class="card"><div class="ico">🔌</div><h3>Integrações &amp; APIs</h3><p>Pagamentos, WhatsApp, CRMs e outras ferramentas conectadas ao seu sistema.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETOS -->
+<section id="projetos" style="background:var(--bg2)">
+  <div class="container">
+    <h2 class="section-title metal">Projetos</h2>
+    <p class="section-sub">Alguns dos trabalhos desenvolvidos pela Raw Build Dev.</p>
+
+    <h3 style="color:var(--muted);font-size:15px;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px">Sistemas</h3>
+    <div class="grid grid-2" style="margin-bottom:56px">
+      <div class="project">
+        <div class="thumb"><img src="relay.png" alt="Painel Relay" onerror="this.style.display='none';this.parentNode.innerHTML='🖼️ Salve o print como relay.png nesta pasta'"></div>
+        <div class="body">
+          <span class="tag">Sistema Web · SaaS</span>
+          <h3>Relay — Hub de Marketplaces</h3>
+          <p>Plataforma que unifica a operação de e-commerce em um só painel: estoque sincronizado, precificação com IA 24/7, atendimento automático e geração de conteúdo de produto — integrando Bling, Mercado Livre, Amazon e TikTok.</p>
+          <a href="https://hub-marketplace-production.up.railway.app/" target="_blank" class="link">Ver projeto →</a>
+        </div>
+      </div>
+      <div class="project">
+        <div class="thumb"><img src="build.png" alt="Painel Build Brasil" onerror="this.style.display='none';this.parentNode.innerHTML='🖼️ Salve o print como build.png nesta pasta'"></div>
+        <div class="body">
+          <span class="tag">Sistema Web · Gestão</span>
+          <h3>Build Brasil — Painel de Resultados</h3>
+          <p>Painel de gestão para engenharia que reúne comercial, operação, financeiro e suprimentos em um só lugar, com indicadores em tempo real, acesso controlado por usuário e banco de dados dedicado para acompanhar cada obra.</p>
+          <a href="https://painel-build.vercel.app/" target="_blank" class="link">Ver projeto →</a>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="color:var(--muted);font-size:15px;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px">Landing Pages</h3>
+    <div class="grid grid-2">
+      <div class="project">
+        <div class="thumb"><img src="prime.png" alt="Site Prime Advocacia" onerror="this.style.display='none';this.parentNode.innerHTML='🖼️ Salve o print como prime.png nesta pasta'"></div>
+        <div class="body">
+          <span class="tag">Landing Page · Institucional</span>
+          <h3>Prime Advocacia &amp; Consultoria Jurídica</h3>
+          <p>Site de captação para escritório de advocacia, com foco em resultados, transparência e segurança. Atendimento jurídico especializado para pessoas físicas e empresas, apresentado de forma clara e profissional.</p>
+          <a href="https://prime-advogacia.vercel.app/" target="_blank" class="link">Acessar →</a>
+        </div>
+      </div>
+      <div class="project">
+        <div class="thumb">🖼️ [Adicione aqui a imagem/print da landing page]</div>
+        <div class="body">
+          <span class="tag">Landing Page</span>
+          <h3>[Próximo projeto]</h3>
+          <p>[Breve descrição: objetivo da página, público e resultado.]</p>
+          <a href="#" class="link">Acessar →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="container">
+    <h2 class="section-title metal">Sobre a Raw Build Dev</h2>
+    <p class="section-sub" style="max-width:720px">Somos um estúdio de desenvolvimento focado em transformar ideias em produtos digitais que funcionam. Trabalhamos lado a lado com o cliente, com código limpo, prazos claros e suporte contínuo.</p>
+    <div class="stats">
+      <div class="stat"><div class="num metal">100%</div><div class="lbl">Projetos sob medida</div></div>
+      <div class="stat"><div class="num metal">Ágil</div><div class="lbl">Entregas em ciclos rápidos</div></div>
+      <div class="stat"><div class="num metal">24/7</div><div class="lbl">Suporte dedicado</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="container">
+    <div class="cta">
+      <svg style="width:70px;height:70px;margin-bottom:20px"><use href="#rblogo"/></svg>
+      <h2 class="metal">Vamos construir seu projeto?</h2>
+      <p>Conte sua ideia e receba uma proposta sem compromisso.</p>
+      <div class="hero-actions">
+        <a href="https://wa.me/55SEUNUMERO" class="btn btn-primary">WhatsApp</a>
+        <a href="mailto:seuemail@rawbuilddev.com" class="btn btn-ghost">E-mail</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    © 2026 Raw Build Dev — Desenvolvimento de Software e Sites. Todos os direitos reservados.
+  </div>
+</footer>
+
+</body>
+</html>
